@@ -1,15 +1,15 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const CityItem = (props) => {
-    return(
-        <TouchableOpacity style={styles.container}>
+    return (
+        <TouchableOpacity style={styles.container} onPress={props.onSelect}>
             <Text style={styles.text}>{props.cityName}</Text>
         </TouchableOpacity>
     )
 }
 
-export {CityItem};
+export { CityItem };
 
 const styles = StyleSheet.create({
     container: {

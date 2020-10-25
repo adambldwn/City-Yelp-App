@@ -11,17 +11,18 @@ const Router = () => {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen
-                    name='Cities'
+                    name="Cities"
                     component={CityList}
                     options={{ headerShown: false }}
                 />
                 <Stack.Screen
-                    name='Restaurants'
+                    name="Restaurants"
                     component={RestaurantList}
                     options={{ headerShown: false }}
+
                 />
                 <Stack.Screen
-                    name='Details'
+                    name="Details"
                     component={RestaurantDetail}
                     options={{ headerShown: false }}
                 />
