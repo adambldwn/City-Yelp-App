@@ -1,14 +1,25 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const CityItem = (props) => {
     return(
         
-            <TouchableOpacity>
-                <Text>{props.cityName}</Text>
+            <TouchableOpacity style={styles.container}>
+                <Text style={styles.text}>{props.cityName}</Text>
             </TouchableOpacity>
         
     )
 }
 
 export {CityItem};
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+        alignItems: 'center'
+    },
+    text: {
+        fontSize: 20,
+        fontWeight: '300'
+    }
+})
