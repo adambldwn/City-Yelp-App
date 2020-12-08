@@ -1,46 +1,66 @@
 import axios from 'axios';
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView, View, Text, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, View, Text, FlatList } from 'react-native';
 
-import {RestaurantItem} from '../components';
+import { RestaurantItem, SearchBar } from '../components';
+
+let originalList = [];
 
 const RestaurantList = (props) => {
     const [restaurantList, setRestaurantList] = useState([]);
-    const {selectedCity} = props.route.params
+    const { selectedCity } = props.route.params
 
 
 
-    const fetchRestaurants = ()=>{
+    const fetchRestaurants = () => {
         axios.get(
             "https://opentable.herokuapp.com/api/restaurants",
             {
-                params :{
-                    "city" : selectedCity
+                params: {
+                    "city": selectedCity
                 }
             })
             .then(response => {
                 setRestaurantList(response.data.restaurants)
+                originalList=[...response.data.restaurants];
             })
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchRestaurants();
-    },[])
+    }, [])
 
-    const renderRestaurants = ({item}) => {
-        return(
+    const renderRestaurants = ({ item }) => {
+        return (
             <RestaurantItem
                 restaurant={item}
+                onSelect={ () => props.navigation.navigate("Details", {selectedRestaurant: item}) }
             />
         )
     }
 
-    return(
-        <SafeAreaView>
-            <View>
-                <Text>{selectedCity}</Text>
+    function searchRestaurant(search){
+        const filteredRestaurants = originalList.filter(restaurant =>{
+            const text = search.toUpperCase();
+            const restaurantName = restaurant.name.toUpperCase();
+
+            return restaurantName.indexOf(text) > -1;
+        })
+        setRestaurantList(filteredRestaurants);
+    }
+
+    return (
+        <SafeAreaView style={{flex: 1}}>
+            <View style={{flex: 1}}>
+                <View>
+                    <Text style={{margin:5, fontWeight:'bold', fontSize: 40}}>{selectedCity} Restaurants</Text>
+                    <SearchBar
+                        placeholder="Search a restaurant..."
+                        onSearch= {(value) => searchRestaurant(value)}
+                    />
+                </View>
                 <FlatList
-                    keyExtractor={(item,index)=>index.toString()}
+                    keyExtractor={(item, index) => index.toString()}
                     data={restaurantList}
                     renderItem={renderRestaurants}
                 />
@@ -49,4 +69,4 @@ const RestaurantList = (props) => {
     )
 }
 
-export {RestaurantList}
+export { RestaurantList }
